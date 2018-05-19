@@ -52,12 +52,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Maklad\\Permission\\": "src"
+            "Anggarasaja\\Permission\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Maklad\\Permission\\Test\\": "tests"
+            "Anggarasaja\\Permission\\Test\\": "tests"
         }
     },
     "scripts": {
@@ -71,7 +71,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Maklad\\Permission\\PermissionServiceProvider"
+                "Anggarasaja\\Permission\\PermissionServiceProvider"
             ]
         }
     }
