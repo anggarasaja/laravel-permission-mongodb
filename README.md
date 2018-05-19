@@ -88,7 +88,7 @@ You can publish the config file with:
 php artisan vendor:publish --provider="Anggarasaja\Permission\PermissionServiceProvider" --tag="config"
 ```
 
-When published, the [`config/permission.php`](https://github.com/mostafamaklad/laravel-permission-mongodb/blob/master/config/permission.php) config file contains:
+When published, the [`config/permission.php`](https://github.com/anggarasaja/laravel-permission-mongodb/blob/master/config/permission.php) config file contains:
 
 ```php
 return [
@@ -169,13 +169,13 @@ return [
 You can install the package via Composer:
 
 ``` bash
-composer require mostafamaklad/laravel-permission-mongodb
+composer require anggarasaja/laravel-permission-mongodb
 ```
 
 Copy the required files:
 
 ```bash
-cp vendor/mostafamaklad/laravel-permission-mongodb/config/permission.php config/permission.php
+cp vendor/anggarasaja/laravel-permission-mongodb/config/permission.php config/permission.php
 ```
 
 You will also need to create another configuration file at `config/auth.php`. Get it on the Laravel repository or just run the following command:
@@ -650,7 +650,7 @@ public function setUp()
 
 Two notes about Database Seeding:
 
-1. It is best to flush the `maklad.permission.cache` before seeding, to avoid cache conflict errors. This can be done from an Artisan command (see Troubleshooting: Cache section, later) or directly in a seeder class (see example below).
+1. It is best to flush the `anggarasaja.permission.cache` before seeding, to avoid cache conflict errors. This can be done from an Artisan command (see Troubleshooting: Cache section, later) or directly in a seeder class (see example below).
 
 2. Here's a sample seeder, which clears the cache, creates permissions, and then assigns permissions to roles:
 ```php
@@ -663,7 +663,7 @@ class RolesAndPermissionsSeeder extends Seeder
     public function run()
     {
         // Reset cached roles and permissions
-        app()['cache']->forget('maklad.permission.cache');
+        app()['cache']->forget('anggarasaja.permission.cache');
         
         // create permissions
         Permission::firstOrCreate(['name' => 'edit articles']);
@@ -722,7 +722,7 @@ HOWEVER, if you manipulate permission/role data directly in the database instead
 ### Manual cache reset
 To manually reset the cache for this package, run:
 ```bash
-php artisan cache:forget maklad.permission.cache
+php artisan cache:forget anggarasaja.permission.cache
 ```
 
 ### Cache Identifier
@@ -749,7 +749,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details
 
 ## Security
 
-If you discover any security-related issues, please email dev.mostafa.maklad@gmail.com instead of using the issue tracker.
+If you discover any security-related issues, please email dev.mostafa.anggarasaja@gmail.com instead of using the issue tracker.
 
 ## Credits
 
@@ -762,10 +762,10 @@ If you discover any security-related issues, please email dev.mostafa.maklad@gma
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
 
-[link-packagist]: https://packagist.org/packages/mostafamaklad/laravel-permission-mongodb
-[ico-version]: https://img.shields.io/packagist/v/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
-[ico-license]: https://img.shields.io/packagist/l/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
+[link-packagist]: https://packagist.org/packages/anggarasaja/laravel-permission-mongodb
+[ico-version]: https://img.shields.io/packagist/v/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
+[ico-license]: https://img.shields.io/packagist/l/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
 
 [link-laravel-5.2]: https://laravel.com/docs/5.2
 [ico-laravel-5.2]: https://img.shields.io/badge/Laravel-5.2.x-brightgreen.svg?style=flat-square
@@ -778,40 +778,40 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-laravel-5.6]: https://laravel.com/docs/5.6
 [ico-laravel-5.6]: https://img.shields.io/badge/Laravel-5.6.x-brightgreen.svg?style=flat-square
 
-[link-travis]: https://travis-ci.org/mostafamaklad/laravel-permission-mongodb
-[ico-travis]: https://img.shields.io/travis/mostafamaklad/laravel-permission-mongodb/master.svg?style=flat-square
+[link-travis]: https://travis-ci.org/anggarasaja/laravel-permission-mongodb
+[ico-travis]: https://img.shields.io/travis/anggarasaja/laravel-permission-mongodb/master.svg?style=flat-square
 
-[link-scrutinizer]: https://scrutinizer-ci.com/g/mostafamaklad/laravel-permission-mongodb
-[link-scrutinizer-build]: https://scrutinizer-ci.com/g/mostafamaklad/laravel-permission-mongodb/build-status/master
-[link-scrutinizer-coverage]: https://scrutinizer-ci.com/g/mostafamaklad/laravel-permission-mongodb/code-structure
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/g/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
-[ico-scrutinizer-build]: https://img.shields.io/scrutinizer/build/g/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
-[ico-scrutinizer-coverage]: https://img.shields.io/scrutinizer/coverage/g/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
+[link-scrutinizer]: https://scrutinizer-ci.com/g/anggarasaja/laravel-permission-mongodb
+[link-scrutinizer-build]: https://scrutinizer-ci.com/g/anggarasaja/laravel-permission-mongodb/build-status/master
+[link-scrutinizer-coverage]: https://scrutinizer-ci.com/g/anggarasaja/laravel-permission-mongodb/code-structure
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/g/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
+[ico-scrutinizer-build]: https://img.shields.io/scrutinizer/build/g/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
+[ico-scrutinizer-coverage]: https://img.shields.io/scrutinizer/coverage/g/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
 
-[link-coveralls]: https://coveralls.io/github/mostafamaklad/laravel-permission-mongodb
-[ico-coveralls]: https://img.shields.io/coveralls/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
+[link-coveralls]: https://coveralls.io/github/anggarasaja/laravel-permission-mongodb
+[ico-coveralls]: https://img.shields.io/coveralls/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
 
 [link-styleci]: https://styleci.io/repos/100894062
 [ico-styleci]: https://styleci.io/repos/100894062/shield?style=flat-square
 
-[link-codeclimate]: https://codeclimate.com/github/mostafamaklad/laravel-permission-mongodb
-[link-codeclimate-coverage]: https://codeclimate.com/github/mostafamaklad/laravel-permission-mongodb/coverage
-[link-codeclimate-maintainability]: https://codeclimate.com/github/mostafamaklad/laravel-permission-mongodb/maintainability
-[ico-codeclimate]: https://img.shields.io/codeclimate/github/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
-[ico-codeclimate-coverage]: https://img.shields.io/codeclimate/coverage/github/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
-[ico-codeclimate-issue-count]: https://img.shields.io/codeclimate/issues/github/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
+[link-codeclimate]: https://codeclimate.com/github/anggarasaja/laravel-permission-mongodb
+[link-codeclimate-coverage]: https://codeclimate.com/github/anggarasaja/laravel-permission-mongodb/coverage
+[link-codeclimate-maintainability]: https://codeclimate.com/github/anggarasaja/laravel-permission-mongodb/maintainability
+[ico-codeclimate]: https://img.shields.io/codeclimate/github/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
+[ico-codeclimate-coverage]: https://img.shields.io/codeclimate/coverage/github/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
+[ico-codeclimate-issue-count]: https://img.shields.io/codeclimate/issues/github/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
 [ico-codeclimate-maintainability]: https://api.codeclimate.com/v1/badges/005c3644a2db6b364514/maintainability
 
-[link-codacy]: https://www.codacy.com/app/mostafamaklad/laravel-permission-mongodb?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mostafamaklad/laravel-permission-mongodb&amp;utm_campaign=Badge_Grade
+[link-codacy]: https://www.codacy.com/app/anggarasaja/laravel-permission-mongodb?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=anggarasaja/laravel-permission-mongodb&amp;utm_campaign=Badge_Grade
 [ico-codacy]: https://api.codacy.com/project/badge/Grade/11620283b18945e2beb77e59ddc90624
 
-[link-gemnasium]: https://gemnasium.com/github.com/mostafamaklad/laravel-permission-mongodb
-[ico-gemnasium]: https://img.shields.io/gemnasium/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
+[link-gemnasium]: https://gemnasium.com/github.com/anggarasaja/laravel-permission-mongodb
+[ico-gemnasium]: https://img.shields.io/gemnasium/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
 
 [link-sensiolabs]: https://insight.sensiolabs.com/projects/9a0d8b6f-1b6d-4f9f-ba87-ed9ab66b7707
 [ico-sensiolabs]: https://insight.sensiolabs.com/projects/9a0d8b6f-1b6d-4f9f-ba87-ed9ab66b7707/mini.png
 
-[link-author]: https://github.com/mostafamaklad
+[link-author]: https://github.com/anggarasaja
 [link-contributors]: ../../contributors
 [link-laravel-permission]: https://github.com/spatie/laravel-permission
 [link-laravel-mongodb]: https://github.com/jenssegers/laravel-mongodb
