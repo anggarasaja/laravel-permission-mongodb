@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Maklad\Permission\Commands;
+namespace Anggarasaja\Permission\Commands;
 
 use Illuminate\Console\Command;
-use Maklad\Permission\Contracts\PermissionInterface as Permission;
-use Maklad\Permission\Contracts\RoleInterface as Role;
+use Anggarasaja\Permission\Contracts\PermissionInterface as Permission;
+use Anggarasaja\Permission\Contracts\RoleInterface as Role;
 
 /**
  * Class CreateRole
- * @package Maklad\Permission\Commands
+ * @package Anggarasaja\Permission\Commands
  */
 class CreateRole extends Command
 {

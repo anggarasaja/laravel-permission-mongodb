@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Maklad\Permission;
+namespace Anggarasaja\Permission;
 
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\Collection;
 use Jenssegers\Mongodb\Eloquent\Model;
-use Maklad\Permission\Contracts\PermissionInterface as Permission;
+use Anggarasaja\Permission\Contracts\PermissionInterface as Permission;
 
 /**
  * Class PermissionRegistrar
- * @package Maklad\Permission
+ * @package Anggarasaja\Permission
  */
 class PermissionRegistrar
 {
@@ -30,7 +30,7 @@ class PermissionRegistrar
         $this->cache = $cache;
     }
 
-    public function registerPermissions(): bool
+    public function registerPermissions()
     {
         $this->getPermissions()->map(function (Permission $permission) {
             $this->gate->define($permission->name, function (Model $user) use ($permission) {
@@ -46,7 +46,7 @@ class PermissionRegistrar
         $this->cache->forget($this->cacheKey);
     }
 
-    public function getPermissions(): Collection
+    public function getPermissions()
     {
         return $this->cache->remember($this->cacheKey, \config('permission.cache_expiration_time'), function () {
             return \app(Permission::class)->with('roles')->get();

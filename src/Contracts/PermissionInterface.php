@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Maklad\Permission\Contracts;
+namespace Anggarasaja\Permission\Contracts;
 
 use Jenssegers\Mongodb\Relations\BelongsToMany;
-use Maklad\Permission\Exceptions\PermissionDoesNotExist;
+use Anggarasaja\Permission\Exceptions\PermissionDoesNotExist;
 
 /**
  * Interface PermissionInterface
- * @package Maklad\Permission\Contracts
+ * @package Anggarasaja\Permission\Contracts
  */
 interface PermissionInterface
 {
@@ -16,7 +16,7 @@ interface PermissionInterface
      * A permission can be applied to roles.
      * @return BelongsToMany
      */
-    public function roles(): BelongsToMany;
+    public function roles();
 
     /**
      * Find a permission by its name.
@@ -28,5 +28,5 @@ interface PermissionInterface
      *
      * @return PermissionInterface
      */
-    public static function findByName(string $name, $guardName): PermissionInterface;
+    public static function findByName($name, $guardName);
 }

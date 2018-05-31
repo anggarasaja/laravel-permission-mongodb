@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Maklad\Permission\Traits;
+namespace Anggarasaja\Permission\Traits;
 
 use Jenssegers\Mongodb\Eloquent\Model;
-use Maklad\Permission\PermissionRegistrar;
+use Anggarasaja\Permission\PermissionRegistrar;
 
 /**
  * Trait RefreshesPermissionCache
- * @package Maklad\Permission\Traits
+ * @package Anggarasaja\Permission\Traits
  */
 trait RefreshesPermissionCache
 {

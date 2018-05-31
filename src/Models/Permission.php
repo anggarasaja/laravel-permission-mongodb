@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace Maklad\Permission\Models;
+namespace Anggarasaja\Permission\Models;
 
 use Illuminate\Support\Collection;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Relations\BelongsToMany;
-use Maklad\Permission\Contracts\PermissionInterface;
-use Maklad\Permission\Exceptions\PermissionAlreadyExists;
-use Maklad\Permission\Exceptions\PermissionDoesNotExist;
-use Maklad\Permission\Guard;
-use Maklad\Permission\Helpers;
-use Maklad\Permission\PermissionRegistrar;
-use Maklad\Permission\Traits\HasRoles;
-use Maklad\Permission\Traits\RefreshesPermissionCache;
+use Anggarasaja\Permission\Contracts\PermissionInterface;
+use Anggarasaja\Permission\Exceptions\PermissionAlreadyExists;
+use Anggarasaja\Permission\Exceptions\PermissionDoesNotExist;
+use Anggarasaja\Permission\Guard;
+use Anggarasaja\Permission\Helpers;
+use Anggarasaja\Permission\PermissionRegistrar;
+use Anggarasaja\Permission\Traits\HasRoles;
+use Anggarasaja\Permission\Traits\RefreshesPermissionCache;
 
 /**
  * Class Permission
- * @package Maklad\Permission\Models
+ * @package Anggarasaja\Permission\Models
  */
 class Permission extends Model implements PermissionInterface
 {
@@ -36,8 +36,11 @@ class Permission extends Model implements PermissionInterface
      */
     public function __construct(array $attributes = [])
     {
-        $attributes['guard_name'] = $attributes['guard_name'] ?? (new Guard())->getDefaultName(static::class);
+        if (!empty($attributes['guard_name'])) $name = $attributes['guard_name'];
+        else $name = (new Guard())->getDefaultName(static::class);
 
+        $attributes['guard_name'] = $name;
+        // dd($attributes['guard_name']);
         parent::__construct($attributes);
 
         $this->helpers = new Helpers();
@@ -51,13 +54,17 @@ class Permission extends Model implements PermissionInterface
      * @param array $attributes
      *
      * @return $this|\Illuminate\Database\Eloquent\Model
-     * @throws \Maklad\Permission\Exceptions\PermissionAlreadyExists
+     * @throws \Anggarasaja\Permission\Exceptions\PermissionAlreadyExists
      * @throws \ReflectionException
      */
     public static function create(array $attributes = [])
     {
         $helpers                  = new Helpers();
-        $attributes['guard_name'] = $attributes['guard_name'] ?? (new Guard())->getDefaultName(static::class);
+
+        if (!empty($attributes['guard_name'])) $name = $attributes['guard_name'];
+        else $name = (new Guard())->getDefaultName(static::class);
+
+        $attributes['guard_name'] = $name;
 
         if (static::getPermissions()->where('name', $attributes['name'])->where(
             'guard_name',
@@ -68,7 +75,7 @@ class Permission extends Model implements PermissionInterface
             throw new PermissionAlreadyExists($helpers->getPermissionAlreadyExistsMessage($name, $guardName));
         }
 
-        if ($helpers->isNotLumen() && app()::VERSION < '5.4') {
+        if ($helpers->isNotLumen() && app()->version() < '5.4') {
             return parent::create($attributes);
         }
 
@@ -82,12 +89,15 @@ class Permission extends Model implements PermissionInterface
      * @param string|null $guardName
      *
      * @return PermissionInterface
-     * @throws \Maklad\Permission\Exceptions\PermissionAlreadyExists
+     * @throws \Anggarasaja\Permission\Exceptions\PermissionAlreadyExists
      * @throws \ReflectionException
      */
-    public static function findOrCreate(string $name, $guardName = null): PermissionInterface
+    public static function findOrCreate($name, $guardName = null)
     {
-        $guardName = $guardName ?? (new Guard())->getDefaultName(static::class);
+        if (!empty($guardName)) $name = $guardName;
+        else $name = (new Guard())->getDefaultName(static::class);
+
+        $guardName = $name;
 
         $permission = static::getPermissions()
                             ->where('name', $name)
@@ -105,7 +115,7 @@ class Permission extends Model implements PermissionInterface
      * A permission can be applied to roles.
      * @return BelongsToMany
      */
-    public function roles(): BelongsToMany
+    public function roles()
     {
         return $this->belongsToMany(
             \config('permission.models.role'),
@@ -117,7 +127,7 @@ class Permission extends Model implements PermissionInterface
      * A permission belongs to some users of the model associated with its guard.
      * @return BelongsToMany
      */
-    public function users(): BelongsToMany
+    public function users()
     {
         return $this->belongsToMany($this->helpers->getModelForGuard($this->attributes['guard_name']));
     }
@@ -132,9 +142,12 @@ class Permission extends Model implements PermissionInterface
      * @throws PermissionDoesNotExist
      * @throws \ReflectionException
      */
-    public static function findByName(string $name, $guardName = null): PermissionInterface
+    public static function findByName($name, $guardName = null)
     {
-        $guardName = $guardName ?? (new Guard())->getDefaultName(static::class);
+        if (!empty($guardName)) $name2 = $guardName;
+        else $name2 = (new Guard())->getDefaultName(static::class);
+
+        $guardName = $name2;
 
         $permission = static::getPermissions()->where('name', $name)->where('guard_name', $guardName)->first();
 
@@ -150,7 +163,7 @@ class Permission extends Model implements PermissionInterface
      * Get the current cached permissions.
      * @return Collection
      */
-    protected static function getPermissions(): Collection
+    protected static function getPermissions()
     {
         return \app(PermissionRegistrar::class)->getPermissions();
     }

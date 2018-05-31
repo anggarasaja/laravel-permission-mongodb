@@ -1,10 +1,10 @@
 <?php
 
-namespace Maklad\Permission\Exceptions;
+namespace Anggarasaja\Permission\Exceptions;
 
 /**
  * Class UnauthorizedRole
- * @package Maklad\Permission\Exceptions
+ * @package Anggarasaja\Permission\Exceptions
  */
 class UnauthorizedRole extends UnauthorizedException
 {

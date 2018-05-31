@@ -1,11 +1,11 @@
 <?php
 
-namespace Maklad\Permission\Exceptions;
+namespace Anggarasaja\Permission\Exceptions;
 
 /**
  * Class RoleAlreadyExists
- * @package Maklad\Permission\Exceptions
+ * @package Anggarasaja\Permission\Exceptions
  */
-class RoleAlreadyExists extends MakladException
+class RoleAlreadyExists extends AnggarasajaException
 {
 }

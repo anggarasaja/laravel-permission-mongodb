@@ -1,11 +1,11 @@
 <?php
 
-namespace Maklad\Permission\Exceptions;
+namespace Anggarasaja\Permission\Exceptions;
 
 /**
  * Class RoleDoesNotExist
- * @package Maklad\Permission\Exceptions
+ * @package Anggarasaja\Permission\Exceptions
  */
-class RoleDoesNotExist extends MakladException
+class RoleDoesNotExist extends AnggarasajaException
 {
 }

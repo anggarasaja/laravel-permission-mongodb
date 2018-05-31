@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Maklad\Permission;
+namespace Anggarasaja\Permission;
 
 use Illuminate\Support\Collection;
 
 /**
  * Class Helpers
- * @package Maklad\Permission
+ * @package Anggarasaja\Permission
  */
 class Helpers
 {
@@ -16,7 +16,7 @@ class Helpers
      *
      * @return string|null
      */
-    public function getModelForGuard(string $guard)
+    public function getModelForGuard($guard)
     {
         return \collect(\config('auth.guards'))
             ->map(function ($guard) {
@@ -30,7 +30,7 @@ class Helpers
      *
      * @return string
      */
-    public function getGuardDoesNotMatchMessage(Collection $expected, string $given): string
+    public function getGuardDoesNotMatchMessage(Collection $expected, $given)
     {
         return "The given role or permission should use guard `{$expected->implode(', ')}` instead of `{$given}`.";
     }
@@ -41,7 +41,7 @@ class Helpers
      *
      * @return string
      */
-    public function getPermissionAlreadyExistsMessage(string $name, string $guardName): string
+    public function getPermissionAlreadyExistsMessage($name, $guardName)
     {
         return "A permission `{$name}` already exists for guard `{$guardName}`.";
     }
@@ -52,7 +52,7 @@ class Helpers
      *
      * @return string
      */
-    public function getPermissionDoesNotExistMessage(string $name, string $guardName): string
+    public function getPermissionDoesNotExistMessage($name, $guardName)
     {
         return "There is no permission named `{$name}` for guard `{$guardName}`.";
     }
@@ -63,7 +63,7 @@ class Helpers
      *
      * @return string
      */
-    public function getRoleAlreadyExistsMessage(string $name, string $guardName): string
+    public function getRoleAlreadyExistsMessage($name, $guardName)
     {
         return "A role `{$name}` already exists for guard `{$guardName}`.";
     }
@@ -75,7 +75,7 @@ class Helpers
      *
      * @return string
      */
-    public function getRoleDoesNotExistMessage(string $name, string $guardName): string
+    public function getRoleDoesNotExistMessage($name, $guardName)
     {
         return "There is no role named `{$name}` for guard `{$guardName}`.";
     }
@@ -85,7 +85,7 @@ class Helpers
      *
      * @return string
      */
-    public function getUnauthorizedRoleMessage(string $roles): string
+    public function getUnauthorizedRoleMessage($roles)
     {
         $message = "User does not have the right roles `{$roles}`.";
         if (! config('permission.display_permission_in_exception')) {
@@ -100,7 +100,7 @@ class Helpers
      *
      * @return string
      */
-    public function getUnauthorizedPermissionMessage(string $permissions): string
+    public function getUnauthorizedPermissionMessage($permissions)
     {
         $message = "User does not have the right permissions `{$permissions}`.";
         if (! config('permission.display_permission_in_exception')) {
@@ -113,12 +113,12 @@ class Helpers
     /**
      * @return string
      */
-    public function getUserNotLoggedINMessage(): string
+    public function getUserNotLoggedINMessage()
     {
         return 'User is not logged in.';
     }
 
-    public function isNotLumen(): bool
+    public function isNotLumen()
     {
         return ! stripos(app()->version(), 'lumen');
     }

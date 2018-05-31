@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Maklad\Permission\Traits;
+namespace Anggarasaja\Permission\Traits;
 
 use Illuminate\Support\Collection;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Relations\BelongsToMany;
-use Maklad\Permission\Contracts\PermissionInterface as Permission;
-use Maklad\Permission\Contracts\RoleInterface as Role;
+use Anggarasaja\Permission\Contracts\PermissionInterface as Permission;
+use Anggarasaja\Permission\Contracts\RoleInterface as Role;
 use ReflectionException;
 
 /**
@@ -33,7 +33,7 @@ trait HasRoles
     /**
      * A model may have multiple roles.
      */
-    public function roles(): BelongsToMany
+    public function roles()
     {
         return $this->belongsToMany(\config('permission.models.role'))->withTimestamps();
     }
@@ -46,7 +46,7 @@ trait HasRoles
      *
      * @return Builder
      */
-    public function scopeRole(Builder $query, $roles): Builder
+    public function scopeRole(Builder $query, $roles)
     {
         $roles = $this->convertToRoleModels($roles);
 
@@ -56,11 +56,11 @@ trait HasRoles
     /**
      * Assign the given role to the model.
      *
-     * @param array|string|Role ...$roles
+     * @param array|string|Role $roles
      *
      * @return array|Role|string
      */
-    public function assignRole(...$roles)
+    public function assignRole($roles)
     {
         $roles = \collect($roles)
             ->flatten()
@@ -82,11 +82,11 @@ trait HasRoles
     /**
      * Revoke the given role from the model.
      *
-     * @param array|string|Role ...$roles
+     * @param array|string|Role $roles
      *
      * @return array|Role|string
      */
-    public function removeRole(...$roles)
+    public function removeRole($roles)
     {
         \collect($roles)
             ->flatten()
@@ -105,11 +105,11 @@ trait HasRoles
     /**
      * Remove all current roles and set the given ones.
      *
-     * @param array ...$roles
+     * @param array $roles
      *
      * @return $this
      */
-    public function syncRoles(...$roles)
+    public function syncRoles($roles)
     {
         $this->roles()->sync([]);
 
@@ -123,14 +123,17 @@ trait HasRoles
      *
      * @return bool
      */
-    public function hasRole($roles): bool
+    public function hasRole($roles)
     {
         if (\is_string($roles) && false !== \strpos($roles, '|')) {
             $roles = \explode('|', $roles);
         }
 
         if (\is_string($roles) || $roles instanceof Role) {
-            return $this->roles->contains('name', $roles->name ?? $roles);
+            if (!empty($roles->name)) $role_name = $roles->name;
+            else $role_name = $roles;
+            return $this->roles->contains('name', $role_name);
+            // return $this->roles->contains('name', $roles->name ?? $roles);
         }
 
         $roles = \collect()->make($roles)->map(function ($role) {
@@ -147,7 +150,7 @@ trait HasRoles
      *
      * @return bool
      */
-    public function hasAnyRole($roles): bool
+    public function hasAnyRole($roles)
     {
         return $this->hasRole($roles);
     }
@@ -159,7 +162,7 @@ trait HasRoles
      *
      * @return bool
      */
-    public function hasAllRoles($roles): bool
+    public function hasAllRoles($roles)
     {
         if (\is_string($roles) && false !== strpos($roles, '|')) {
             $roles = \explode('|', $roles);
@@ -184,7 +187,7 @@ trait HasRoles
      * @return Role
      * @throws ReflectionException
      */
-    protected function getStoredRole($role): Role
+    protected function getStoredRole($role)
     {
         if (\is_string($role)) {
             return \app(Role::class)->findByName($role, $this->getDefaultGuardName());
@@ -198,7 +201,7 @@ trait HasRoles
      *
      * @return Collection
      */
-    public function getRoleNames(): Collection
+    public function getRoleNames()
     {
         return $this->roles()->pluck('name');
     }
@@ -210,7 +213,7 @@ trait HasRoles
      *
      * @return Collection
      */
-    private function convertToRoleModels($roles): Collection
+    private function convertToRoleModels($roles)
     {
         if (is_array($roles)) {
             $roles = collect($roles);

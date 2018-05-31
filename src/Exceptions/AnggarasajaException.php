@@ -1,18 +1,18 @@
 <?php
 
-namespace Maklad\Permission\Exceptions;
+namespace Anggarasaja\Permission\Exceptions;
 
 use InvalidArgumentException;
 use Throwable;
 
 /**
- * Class MakladException
- * @package Maklad\Permission\Exceptions
+ * Class AnggarasajaException
+ * @package Anggarasaja\Permission\Exceptions
  */
-class MakladException extends InvalidArgumentException
+class AnggarasajaException extends InvalidArgumentException
 {
     /**
-     * MakladException constructor.
+     * AnggarasajaException constructor.
      *
      * @param string $message
      * @param int $code

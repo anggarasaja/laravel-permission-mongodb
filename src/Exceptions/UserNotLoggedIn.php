@@ -1,10 +1,10 @@
 <?php
 
-namespace Maklad\Permission\Exceptions;
+namespace Anggarasaja\Permission\Exceptions;
 
 /**
  * Class UserNotLoggedIn
- * @package Maklad\Permission\Exceptions
+ * @package Anggarasaja\Permission\Exceptions
  */
 class UserNotLoggedIn extends UnauthorizedException
 {

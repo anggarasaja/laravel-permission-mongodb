@@ -1,16 +1,16 @@
 <?php
 
-namespace Maklad\Permission;
+namespace Anggarasaja\Permission;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
-use Maklad\Permission\Contracts\PermissionInterface as Permission;
-use Maklad\Permission\Contracts\RoleInterface as Role;
-use Maklad\Permission\Directives\PermissionDirectives;
+use Anggarasaja\Permission\Contracts\PermissionInterface as Permission;
+use Anggarasaja\Permission\Contracts\RoleInterface as Role;
+use Anggarasaja\Permission\Directives\PermissionDirectives;
 
 /**
  * Class PermissionServiceProvider
- * @package Maklad\Permission
+ * @package Anggarasaja\Permission
  */
 class PermissionServiceProvider extends ServiceProvider
 {

@@ -1,11 +1,11 @@
 <?php
-namespace Maklad\Permission;
+namespace Anggarasaja\Permission;
 
 use Illuminate\Support\Collection;
 
 /**
  * Class Guard
- * @package Maklad\Permission
+ * @package Anggarasaja\Permission
  */
 class Guard
 {
@@ -18,15 +18,28 @@ class Guard
      * @return Collection
      * @throws \ReflectionException
      */
-    public function getNames($model) : Collection
+    public function getNames($model)
     {
         if (\is_object($model)) {
-            $guardName = $model->guard_name ?? null;
+
+            if (!empty($model->guard_name)) $name = $model->guard_name;
+            else $name = null;
+
+            $guardName = $name;
         }
 
         if (! isset($guardName)) {
+
             $class = \is_object($model) ? \get_class($model) : $model;
-            $guardName = (new \ReflectionClass($class))->getDefaultProperties()['guard_name'] ?? null;
+
+            $tmp_name = (new \ReflectionClass($class))->getDefaultProperties();
+            // var_dump(isset($tmp_name['guard_name']));
+            // exit;
+
+            if (!empty($tmp_name['guard_name'])) $name = (new \ReflectionClass($class))->getDefaultProperties()['guard_name'];
+            else $name = null;
+
+            $guardName = $name;
         }
 
         if ($guardName) {
@@ -53,7 +66,7 @@ class Guard
      * @return string
      * @throws \ReflectionException
      */
-    public function getDefaultName($class): string
+    public function getDefaultName($class)
     {
         $default = config('auth.defaults.guard');
         return $this->getNames($class)->first() ?: $default;

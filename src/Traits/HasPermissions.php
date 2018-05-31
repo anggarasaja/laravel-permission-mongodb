@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace Maklad\Permission\Traits;
+namespace Anggarasaja\Permission\Traits;
 
 use Illuminate\Support\Collection;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Relations\BelongsToMany;
-use Maklad\Permission\Contracts\PermissionInterface as Permission;
-use Maklad\Permission\Exceptions\GuardDoesNotMatch;
-use Maklad\Permission\Guard;
-use Maklad\Permission\Helpers;
-use Maklad\Permission\Models\Role;
-use Maklad\Permission\PermissionRegistrar;
+use Anggarasaja\Permission\Contracts\PermissionInterface as Permission;
+use Anggarasaja\Permission\Exceptions\GuardDoesNotMatch;
+use Anggarasaja\Permission\Guard;
+use Anggarasaja\Permission\Helpers;
+use Anggarasaja\Permission\Models\Role;
+use Anggarasaja\Permission\PermissionRegistrar;
 
 /**
  * Trait HasPermissions
- * @package Maklad\Permission\Traits
+ * @package Anggarasaja\Permission\Traits
  */
 trait HasPermissions
 {
@@ -35,7 +35,7 @@ trait HasPermissions
      * A role may be given various permissions.
      * @return BelongsToMany
      */
-    public function permissions(): BelongsToMany
+    public function permissions()
     {
         return $this->belongsToMany(
             config('permission.models.permission'),
@@ -46,7 +46,7 @@ trait HasPermissions
     /**
      * A role belongs to some users of the model associated with its guard.
      */
-    public function users(): BelongsToMany
+    public function users()
     {
         return $this->belongsToMany($this->helpers->getModelForGuard($this->attributes['guard_name']));
     }
@@ -59,7 +59,7 @@ trait HasPermissions
      * @return $this
      * @throws GuardDoesNotMatch
      */
-    public function givePermissionTo(...$permissions)
+    public function givePermissionTo($permissions)
     {
         $permissions = collect($permissions)
             ->flatten()
@@ -86,7 +86,7 @@ trait HasPermissions
      * @return $this
      * @throws GuardDoesNotMatch
      */
-    public function syncPermissions(...$permissions)
+    public function syncPermissions($permissions)
     {
         $this->permissions()->sync([]);
 
@@ -99,9 +99,9 @@ trait HasPermissions
      * @param string|array|Permission|\Illuminate\Support\Collection $permissions
      *
      * @return $this
-     * @throws \Maklad\Permission\Exceptions\GuardDoesNotMatch
+     * @throws \Anggarasaja\Permission\Exceptions\GuardDoesNotMatch
      */
-    public function revokePermissionTo(...$permissions)
+    public function revokePermissionTo($permissions)
     {
         collect($permissions)
             ->flatten()
@@ -123,7 +123,7 @@ trait HasPermissions
      * @return Permission
      * @throws \ReflectionException
      */
-    protected function getStoredPermission($permission): Permission
+    protected function getStoredPermission($permission)
     {
         if (\is_string($permission)) {
             return \app(Permission::class)->findByName($permission, $this->getDefaultGuardName());
@@ -153,7 +153,7 @@ trait HasPermissions
      * @return Collection
      * @throws \ReflectionException
      */
-    protected function getGuardNames(): Collection
+    protected function getGuardNames()
     {
         return (new Guard())->getNames($this);
     }
@@ -162,7 +162,7 @@ trait HasPermissions
      * @return string
      * @throws \ReflectionException
      */
-    protected function getDefaultGuardName(): string
+    protected function getDefaultGuardName()
     {
         return (new Guard())->getDefaultName($this);
     }
@@ -182,7 +182,7 @@ trait HasPermissions
      *
      * @return Collection
      */
-    private function convertToPermissionModels($permissions): Collection
+    private function convertToPermissionModels($permissions)
     {
         if (\is_array($permissions)) {
             $permissions = collect($permissions);
@@ -204,7 +204,7 @@ trait HasPermissions
      *
      * @return Collection
      */
-    public function getPermissionNames(): Collection
+    public function getPermissionNames()
     {
         return $this->getAllPermissions()->pluck('name');
     }
@@ -212,7 +212,7 @@ trait HasPermissions
     /**
      * Return all the permissions the model has via roles.
      */
-    public function getPermissionsViaRoles(): Collection
+    public function getPermissionsViaRoles()
     {
         return $this->load('roles', 'roles.permissions')
             ->roles->flatMap(function (Role $role) {
@@ -223,7 +223,7 @@ trait HasPermissions
     /**
      * Return all the permissions the model has, both directly and via roles.
      */
-    public function getAllPermissions(): Collection
+    public function getAllPermissions()
     {
         return $this->permissions
             ->merge($this->getPermissionsViaRoles())
@@ -240,12 +240,15 @@ trait HasPermissions
      * @return bool
      * @throws \ReflectionException
      */
-    public function hasPermissionTo($permission, $guardName = null): bool
+    public function hasPermissionTo($permission, $guardName = null)
     {
         if (\is_string($permission)) {
+            if (!empty($guardName)) $name = $guardName;
+            else $name = $this->getDefaultGuardName();
+
             $permission = \app(Permission::class)->findByName(
                 $permission,
-                $guardName ?? $this->getDefaultGuardName()
+                $name
             );
         }
 
@@ -255,12 +258,12 @@ trait HasPermissions
     /**
      * Determine if the model has any of the given permissions.
      *
-     * @param array ...$permissions
+     * @param array $permissions
      *
      * @return bool
      * @throws \ReflectionException
      */
-    public function hasAnyPermission(...$permissions): bool
+    public function hasAnyPermission($permissions)
     {
         if (\is_array($permissions[0])) {
             $permissions = $permissions[0];
@@ -282,7 +285,7 @@ trait HasPermissions
      *
      * @return bool
      */
-    protected function hasPermissionViaRole(Permission $permission): bool
+    protected function hasPermissionViaRole(Permission $permission)
     {
         return $this->hasRole($permission->roles);
     }
@@ -295,7 +298,7 @@ trait HasPermissions
      * @return bool
      * @throws \ReflectionException
      */
-    public function hasDirectPermission($permission): bool
+    public function hasDirectPermission($permission)
     {
         if (\is_string($permission)) {
             $permission = \app(Permission::class)->findByName($permission, $this->getDefaultGuardName());
@@ -307,7 +310,7 @@ trait HasPermissions
     /**
      * Return all permissions the directory coupled to the model.
      */
-    public function getDirectPermissions(): Collection
+    public function getDirectPermissions()
     {
         return $this->permissions;
     }
@@ -320,7 +323,7 @@ trait HasPermissions
      *
      * @return Builder
      */
-    public function scopePermission(Builder $query, $permissions): Builder
+    public function scopePermission(Builder $query, $permissions)
     {
         $permissions = $this->convertToPermissionModels($permissions);
 

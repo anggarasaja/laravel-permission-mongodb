@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Maklad\Permission\Commands;
+namespace Anggarasaja\Permission\Commands;
 
 use Illuminate\Console\Command;
-use Maklad\Permission\Contracts\PermissionInterface as Permission;
+use Anggarasaja\Permission\Contracts\PermissionInterface as Permission;
 
 /**
  * Class CreatePermission
- * @package Maklad\Permission\Commands
+ * @package Anggarasaja\Permission\Commands
  */
 class CreatePermission extends Command
 {

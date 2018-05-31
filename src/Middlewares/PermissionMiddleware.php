@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Maklad\Permission\Middlewares;
+namespace Anggarasaja\Permission\Middlewares;
 
 use Closure;
-use Maklad\Permission\Exceptions\UnauthorizedPermission;
-use Maklad\Permission\Exceptions\UserNotLoggedIn;
-use Maklad\Permission\Helpers;
+use Anggarasaja\Permission\Exceptions\UnauthorizedPermission;
+use Anggarasaja\Permission\Exceptions\UserNotLoggedIn;
+use Anggarasaja\Permission\Helpers;
 
 /**
  * Class PermissionMiddleware
- * @package Maklad\Permission\Middlewares
+ * @package Anggarasaja\Permission\Middlewares
  */
 class PermissionMiddleware
 {
@@ -20,7 +20,7 @@ class PermissionMiddleware
      * @param $permission
      *
      * @return mixed
-     * @throws \Maklad\Permission\Exceptions\UnauthorizedException
+     * @throws \Anggarasaja\Permission\Exceptions\UnauthorizedException
      */
     public function handle($request, Closure $next, $permission)
     {

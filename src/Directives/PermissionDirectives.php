@@ -1,6 +1,6 @@
 <?php
 
-namespace Maklad\Permission\Directives;
+namespace Anggarasaja\Permission\Directives;
 
 use Illuminate\View\Compilers\BladeCompiler;
 
@@ -83,7 +83,7 @@ class PermissionDirectives
      *
      * @return array
      */
-    private function extractRoleGuard($arguments): array
+    private function extractRoleGuard($arguments)
     {
         $arguments = preg_replace('(\(|\)| )', '', $arguments);
 

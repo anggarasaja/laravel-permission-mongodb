@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Maklad\Permission\Middlewares;
+namespace Anggarasaja\Permission\Middlewares;
 
 use Closure;
-use Maklad\Permission\Exceptions\UnauthorizedRole;
-use Maklad\Permission\Exceptions\UserNotLoggedIn;
-use Maklad\Permission\Helpers;
+use Anggarasaja\Permission\Exceptions\UnauthorizedRole;
+use Anggarasaja\Permission\Exceptions\UserNotLoggedIn;
+use Anggarasaja\Permission\Helpers;
 
 /**
  * Class RoleMiddleware
- * @package Maklad\Permission\Middlewares
+ * @package Anggarasaja\Permission\Middlewares
  */
 class RoleMiddleware
 {
@@ -20,7 +20,7 @@ class RoleMiddleware
      * @param $role
      *
      * @return mixed
-     * @throws \Maklad\Permission\Exceptions\UnauthorizedException
+     * @throws \Anggarasaja\Permission\Exceptions\UnauthorizedException
      */
     public function handle($request, Closure $next, $role)
     {
