@@ -70,7 +70,7 @@ This package can be used in Laravel 5.2 and up.
 You can install the package via composer:
 
 ``` bash
-composer require mostafamaklad/laravel-permission-mongodb
+composer require anggarasaja/laravel-permission-mongodb
 ```
 
 In Laravel 5.5 the service provider will automatically get registered. In older versions of the framework just add the service provider in `config/app.php` file:
@@ -78,17 +78,17 @@ In Laravel 5.5 the service provider will automatically get registered. In older 
 ```php
 'providers' => [
     // ...
-    Maklad\Permission\PermissionServiceProvider::class,
+    Anggarasaja\Permission\PermissionServiceProvider::class,
 ];
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --provider="Maklad\Permission\PermissionServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Anggarasaja\Permission\PermissionServiceProvider" --tag="config"
 ```
 
-When published, the [`config/permission.php`](https://github.com/mostafamaklad/laravel-permission-mongodb/blob/master/config/permission.php) config file contains:
+When published, the [`config/permission.php`](https://github.com/anggarasaja/laravel-permission-mongodb/blob/master/config/permission.php) config file contains:
 
 ```php
 return [
@@ -101,10 +101,10 @@ return [
          * is often just the "Permission" model but you may use whatever you like.
          *
          * The model you want to use as a Permission model needs to implement the
-         * `Maklad\Permission\Contracts\Permission` contract.
+         * `a\Permission\Contracts\Permission` contract.
          */
 
-        'permission' => Maklad\Permission\Models\Permission::class,
+        'permission' => Anggarasaja\Permission\Models\Permission::class,
 
         /*
          * When using the "HasRoles" trait from this package, we need to know which
@@ -112,10 +112,10 @@ return [
          * is often just the "Role" model but you may use whatever you like.
          *
          * The model you want to use as a Role model needs to implement the
-         * `Maklad\Permission\Contracts\Role` contract.
+         * `Anggarasaja\Permission\Contracts\Role` contract.
          */
 
-        'role' => Maklad\Permission\Models\Role::class,
+        'role' => Anggarasaja\Permission\Models\Role::class,
 
     ],
 
@@ -169,13 +169,13 @@ return [
 You can install the package via Composer:
 
 ``` bash
-composer require mostafamaklad/laravel-permission-mongodb
+composer require anggarasaja/laravel-permission-mongodb
 ```
 
 Copy the required files:
 
 ```bash
-cp vendor/mostafamaklad/laravel-permission-mongodb/config/permission.php config/permission.php
+cp vendor/anggarasaja/laravel-permission-mongodb/config/permission.php config/permission.php
 ```
 
 You will also need to create another configuration file at `config/auth.php`. Get it on the Laravel repository or just run the following command:
@@ -189,8 +189,8 @@ Then, in `bootstrap/app.php`, register the middlewares:
 ```php
 $app->routeMiddleware([
     'auth'       => App\Http\Middleware\Authenticate::class,
-    'permission' => Maklad\Permission\Middlewares\PermissionMiddleware::class,
-    'role'       => Maklad\Permission\Middlewares\RoleMiddleware::class,
+    'permission' => Anggarasaja\Permission\Middlewares\PermissionMiddleware::class,
+    'role'       => Anggarasaja\Permission\Middlewares\RoleMiddleware::class,
 ]);
 ```
 
@@ -198,12 +198,12 @@ As well as the configuration and the service provider:
 
 ```php
 $app->configure('permission');
-$app->register(Maklad\Permission\PermissionServiceProvider::class);
+$app->register(Anggarasaja\Permission\PermissionServiceProvider::class);
 ```
 
 ## Usage
 
-First, add the `Maklad\Permission\Traits\HasRoles` trait to your `User` model(s):
+First, add the `Anggarasaja\Permission\Traits\HasRoles` trait to your `User` model(s):
 
 ```php
 use Illuminate\Auth\Authenticatable;
@@ -211,7 +211,7 @@ use Jenssegers\Mongodb\Eloquent\Model as Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Maklad\Permission\Traits\HasRoles;
+use Anggarasaja\Permission\Traits\HasRoles;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -225,7 +225,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
 ```php
 use Jenssegers\Mongodb\Eloquent\Model as Model;
-use Maklad\Permission\Traits\HasRoles;
+use Anggarasaja\Permission\Traits\HasRoles;
 
 class Page extends Model
 {
@@ -241,8 +241,8 @@ This package allows for users to be associated with permissions and roles. Every
 A `Role` and a `Permission` are regular Moloquent models. They require a `name` and can be created like this:
 
 ```php
-use Maklad\Permission\Models\Role;
-use Maklad\Permission\Models\Permission;
+use Anggarasaja\Permission\Models\Role;
+use Anggarasaja\Permission\Models\Permission;
 
 $role = Role::create(['name' => 'writer']);
 $permission = Permission::create(['name' => 'edit articles']);
@@ -297,7 +297,7 @@ $users = User::role('writer')->get(); // Returns only users with the role 'write
 $users = User::permission('edit articles')->get(); // Returns only users with the permission 'edit articles'
 ```
 
-The scope can accept a string, a `\Maklad\Permission\Models\Role` object, a `\Maklad\Permission\Models\Permission` object or an `\Illuminate\Support\Collection` object.
+The scope can accept a string, a `\Anggarasaja\Permission\Models\Role` object, a `\Anggarasaja\Permission\Models\Permission` object or an `\Illuminate\Support\Collection` object.
 
 
 ### Using "direct" permissions
@@ -390,7 +390,7 @@ $user->hasAllRoles(Role::all());
 ```
 
 The `assignRole`, `hasRole`, `hasAnyRole`, `hasAllRoles`  and `removeRole` functions can accept a
- string, a `\Maklad\Permission\Models\Role` object or an `\Illuminate\Support\Collection` object.
+ string, a `\Anggarasaja\Permission\Models\Role` object or an `\Illuminate\Support\Collection` object.
 
 A permission can be given to a role:
 
@@ -411,7 +411,7 @@ $role->revokePermissionTo('edit articles');
 ```
 
 The `givePermissionTo` and `revokePermissionTo` functions can accept a
-string or a `Maklad\Permission\Models\Permission` object.
+string or a `Anggarasaja\Permission\Models\Permission` object.
 
 Permissions are inherited from roles automatically.
 Additionally, individual permissions can be assigned to the user too. 
@@ -446,7 +446,7 @@ $user->getPermissionsViaRoles();
 $user->getAllPermissions();
 ```
 
-All these responses are collections of `Maklad\Permission\Models\Permission` objects.
+All these responses are collections of `Anggarasaja\Permission\Models\Permission` objects.
 
 If we follow the previous example, the first response will be a collection with the `delete article` permission, the
 second will be a collection with the `edit article` permission and the third will contain both.
@@ -566,8 +566,8 @@ This package comes with `RoleMiddleware` and `PermissionMiddleware` middleware. 
 ```php
 protected $routeMiddleware = [
     // ...
-    'role' => \Maklad\Permission\Middlewares\RoleMiddleware::class,
-    'permission' => \Maklad\Permission\Middlewares\PermissionMiddleware::class,
+    'role' => \Anggarasaja\Permission\Middlewares\RoleMiddleware::class,
+    'permission' => \Anggarasaja\Permission\Middlewares\PermissionMiddleware::class,
 ];
 ```
 
@@ -600,7 +600,7 @@ You can add something in Laravel exception handler:
 ```php
 public function render($request, Exception $exception)
 {
-    if ($exception instanceof \Maklad\Permission\Exceptions\UnauthorizedException) {
+    if ($exception instanceof \Anggarasaja\Permission\Exceptions\UnauthorizedException) {
         // Code here ...
     }
 
@@ -642,7 +642,7 @@ public function setUp()
     parent::setUp();
 
     // now re-register all the roles and permissions
-    $this->app->make(\Maklad\Permission\PermissionRegistrar::class)->registerPermissions();
+    $this->app->make(\Anggarasaja\Permission\PermissionRegistrar::class)->registerPermissions();
 }
 ```
 
@@ -650,20 +650,20 @@ public function setUp()
 
 Two notes about Database Seeding:
 
-1. It is best to flush the `maklad.permission.cache` before seeding, to avoid cache conflict errors. This can be done from an Artisan command (see Troubleshooting: Cache section, later) or directly in a seeder class (see example below).
+1. It is best to flush the `anggarasaja.permission.cache` before seeding, to avoid cache conflict errors. This can be done from an Artisan command (see Troubleshooting: Cache section, later) or directly in a seeder class (see example below).
 
 2. Here's a sample seeder, which clears the cache, creates permissions, and then assigns permissions to roles:
 ```php
 use Illuminate\Database\Seeder;
-use Maklad\Permission\Models\Role;
-use Maklad\Permission\Models\Permission;
+use Anggarasaja\Permission\Models\Role;
+use Anggarasaja\Permission\Models\Permission;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
     public function run()
     {
         // Reset cached roles and permissions
-        app()['cache']->forget('maklad.permission.cache');
+        app()['cache']->forget('anggarasaja.permission.cache');
         
         // create permissions
         Permission::firstOrCreate(['name' => 'edit articles']);
@@ -685,18 +685,18 @@ class RolesAndPermissionsSeeder extends Seeder
 ## Extending
 If you need to EXTEND the existing `Role` or `Permission` models note that:
 
-- Your `Role` model needs to extend the `Maklad\Permission\Models\Role` model
-- Your `Permission` model needs to extend the `Maklad\Permission\Models\Permission` model
+- Your `Role` model needs to extend the `Anggarasaja\Permission\Models\Role` model
+- Your `Permission` model needs to extend the `Anggarasaja\Permission\Models\Permission` model
 
 If you need to extend or replace the existing `Role` or `Permission` models you just need to
 keep the following things in mind:
 
-- Your `Role` model needs to implement the `Maklad\Permission\Contracts\Role` contract
-- Your `Permission` model needs to implement the `Maklad\Permission\Contracts\Permission` contract
+- Your `Role` model needs to implement the `Anggarasaja\Permission\Contracts\Role` contract
+- Your `Permission` model needs to implement the `Anggarasaja\Permission\Contracts\Permission` contract
 
 In BOTH cases, whether extending or replacing, you will need to specify your new models in the configuration. To do this you must update the `models.role` and `models.permission` values in the configuration file after publishing the configuration with this command:
   ```bash
-  php artisan vendor:publish --provider="Maklad\Permission\PermissionServiceProvider" --tag="config"
+  php artisan vendor:publish --provider="Anggarasaja\Permission\PermissionServiceProvider" --tag="config"
   ```
 
 ## Cache
@@ -722,7 +722,7 @@ HOWEVER, if you manipulate permission/role data directly in the database instead
 ### Manual cache reset
 To manually reset the cache for this package, run:
 ```bash
-php artisan cache:forget maklad.permission.cache
+php artisan cache:forget anggarasaja.permission.cache
 ```
 
 ### Cache Identifier
@@ -749,12 +749,12 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details
 
 ## Security
 
-If you discover any security-related issues, please email dev.mostafa.maklad@gmail.com instead of using the issue tracker.
+If you discover any security-related issues, please email dev.mostafa.anggarasaja@gmail.com instead of using the issue tracker.
 
 ## Credits
 
 - [Freek Van der Herten][link-freekmurze]
-- [Mostafa Maklad][link-author]
+- [Mostafa Anggarasaja][link-author]
 - [All Contributors][link-contributors]
 
 ## License
@@ -762,10 +762,10 @@ If you discover any security-related issues, please email dev.mostafa.maklad@gma
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
 
-[link-packagist]: https://packagist.org/packages/mostafamaklad/laravel-permission-mongodb
-[ico-version]: https://img.shields.io/packagist/v/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
-[ico-license]: https://img.shields.io/packagist/l/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
+[link-packagist]: https://packagist.org/packages/anggarasaja/laravel-permission-mongodb
+[ico-version]: https://img.shields.io/packagist/v/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
+[ico-license]: https://img.shields.io/packagist/l/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
 
 [link-laravel-5.2]: https://laravel.com/docs/5.2
 [ico-laravel-5.2]: https://img.shields.io/badge/Laravel-5.2.x-brightgreen.svg?style=flat-square
@@ -778,40 +778,40 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-laravel-5.6]: https://laravel.com/docs/5.6
 [ico-laravel-5.6]: https://img.shields.io/badge/Laravel-5.6.x-brightgreen.svg?style=flat-square
 
-[link-travis]: https://travis-ci.org/mostafamaklad/laravel-permission-mongodb
-[ico-travis]: https://img.shields.io/travis/mostafamaklad/laravel-permission-mongodb/master.svg?style=flat-square
+[link-travis]: https://travis-ci.org/anggarasaja/laravel-permission-mongodb
+[ico-travis]: https://img.shields.io/travis/anggarasaja/laravel-permission-mongodb/master.svg?style=flat-square
 
-[link-scrutinizer]: https://scrutinizer-ci.com/g/mostafamaklad/laravel-permission-mongodb
-[link-scrutinizer-build]: https://scrutinizer-ci.com/g/mostafamaklad/laravel-permission-mongodb/build-status/master
-[link-scrutinizer-coverage]: https://scrutinizer-ci.com/g/mostafamaklad/laravel-permission-mongodb/code-structure
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/g/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
-[ico-scrutinizer-build]: https://img.shields.io/scrutinizer/build/g/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
-[ico-scrutinizer-coverage]: https://img.shields.io/scrutinizer/coverage/g/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
+[link-scrutinizer]: https://scrutinizer-ci.com/g/anggarasaja/laravel-permission-mongodb
+[link-scrutinizer-build]: https://scrutinizer-ci.com/g/anggarasaja/laravel-permission-mongodb/build-status/master
+[link-scrutinizer-coverage]: https://scrutinizer-ci.com/g/anggarasaja/laravel-permission-mongodb/code-structure
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/g/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
+[ico-scrutinizer-build]: https://img.shields.io/scrutinizer/build/g/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
+[ico-scrutinizer-coverage]: https://img.shields.io/scrutinizer/coverage/g/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
 
-[link-coveralls]: https://coveralls.io/github/mostafamaklad/laravel-permission-mongodb
-[ico-coveralls]: https://img.shields.io/coveralls/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
+[link-coveralls]: https://coveralls.io/github/anggarasaja/laravel-permission-mongodb
+[ico-coveralls]: https://img.shields.io/coveralls/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
 
 [link-styleci]: https://styleci.io/repos/100894062
 [ico-styleci]: https://styleci.io/repos/100894062/shield?style=flat-square
 
-[link-codeclimate]: https://codeclimate.com/github/mostafamaklad/laravel-permission-mongodb
-[link-codeclimate-coverage]: https://codeclimate.com/github/mostafamaklad/laravel-permission-mongodb/coverage
-[link-codeclimate-maintainability]: https://codeclimate.com/github/mostafamaklad/laravel-permission-mongodb/maintainability
-[ico-codeclimate]: https://img.shields.io/codeclimate/github/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
-[ico-codeclimate-coverage]: https://img.shields.io/codeclimate/coverage/github/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
-[ico-codeclimate-issue-count]: https://img.shields.io/codeclimate/issues/github/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
+[link-codeclimate]: https://codeclimate.com/github/anggarasaja/laravel-permission-mongodb
+[link-codeclimate-coverage]: https://codeclimate.com/github/anggarasaja/laravel-permission-mongodb/coverage
+[link-codeclimate-maintainability]: https://codeclimate.com/github/anggarasaja/laravel-permission-mongodb/maintainability
+[ico-codeclimate]: https://img.shields.io/codeclimate/github/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
+[ico-codeclimate-coverage]: https://img.shields.io/codeclimate/coverage/github/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
+[ico-codeclimate-issue-count]: https://img.shields.io/codeclimate/issues/github/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
 [ico-codeclimate-maintainability]: https://api.codeclimate.com/v1/badges/005c3644a2db6b364514/maintainability
 
-[link-codacy]: https://www.codacy.com/app/mostafamaklad/laravel-permission-mongodb?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mostafamaklad/laravel-permission-mongodb&amp;utm_campaign=Badge_Grade
+[link-codacy]: https://www.codacy.com/app/anggarasaja/laravel-permission-mongodb?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=anggarasaja/laravel-permission-mongodb&amp;utm_campaign=Badge_Grade
 [ico-codacy]: https://api.codacy.com/project/badge/Grade/11620283b18945e2beb77e59ddc90624
 
-[link-gemnasium]: https://gemnasium.com/github.com/mostafamaklad/laravel-permission-mongodb
-[ico-gemnasium]: https://img.shields.io/gemnasium/mostafamaklad/laravel-permission-mongodb.svg?style=flat-square
+[link-gemnasium]: https://gemnasium.com/github.com/anggarasaja/laravel-permission-mongodb
+[ico-gemnasium]: https://img.shields.io/gemnasium/anggarasaja/laravel-permission-mongodb.svg?style=flat-square
 
 [link-sensiolabs]: https://insight.sensiolabs.com/projects/9a0d8b6f-1b6d-4f9f-ba87-ed9ab66b7707
 [ico-sensiolabs]: https://insight.sensiolabs.com/projects/9a0d8b6f-1b6d-4f9f-ba87-ed9ab66b7707/mini.png
 
-[link-author]: https://github.com/mostafamaklad
+[link-author]: https://github.com/anggarasaja
 [link-contributors]: ../../contributors
 [link-laravel-permission]: https://github.com/spatie/laravel-permission
 [link-laravel-mongodb]: https://github.com/jenssegers/laravel-mongodb
